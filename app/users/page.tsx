@@ -11,19 +11,26 @@ const UsersPage = async () => {
   const users: User[] = await res.json();
   return (
     <>
-      <h1>users</h1>
-      <p>{new Date().toLocaleTimeString()}</p>
-      <ul className="pt-4">
-        {users.map((user) => (
-          <div
-            key={user.id}
-            className="px-4 font-mono text-left text-sm w-full"
-          >
-            <li className="font-bold text-base">{user.name}</li>
-            <li>{user.email}</li>
-          </div>
-        ))}
-      </ul>
+      <h1>Users</h1>
+      <table className="table mt-5">
+        <thead>
+          <tr className="bg-base-200">
+            <th className="font-bold text-base">Username</th>
+            <th className="font-bold text-base">Email</th>
+          </tr>
+        </thead>
+        <tbody>
+          {users.map((user) => (
+            <tr
+              key={user.id}
+              className="px-4 font-mono text-left text-sm w-full"
+            >
+              <td className="font-bold text-base">{user.name}</td>
+              <td>{user.email}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </>
   );
 };
