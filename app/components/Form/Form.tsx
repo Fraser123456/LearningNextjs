@@ -1,12 +1,48 @@
-import React, { FormEvent, ReactNode } from "react";
+"use client";
+import React, { InputHTMLAttributes, ReactNode } from "react";
 
-interface Props {
+//Form
+import {
+  useForm,
+  SubmitHandler,
+  FormProvider,
+  DefaultValues,
+} from "react-hook-form";
+
+//Validation
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+
+//Constants
+import { FormFields } from "./constants/constants";
+
+interface Props<T extends FormFields> {
   children: ReactNode;
-  handleSubmit: (event: FormEvent) => void;
+  schema: yup.ObjectSchema<T>;
+  defaultValues?: DefaultValues<T>;
+  className?: string | undefined;
+  onSubmit: SubmitHandler<T>;
 }
 
-const Form = ({ children, handleSubmit }: Props) => {
-  return <form onSubmit={handleSubmit}>{children}</form>;
+const Form = <T extends FormFields>({
+  children,
+  schema,
+  defaultValues,
+  className,
+  onSubmit,
+}: Props<T>) => {
+  const methods = useForm<T>({
+    resolver: yupResolver(schema) as any,
+    defaultValues,
+  });
+
+  return (
+    <FormProvider {...methods}>
+      <form className={className} onSubmit={methods.handleSubmit(onSubmit)}>
+        {children}
+      </form>
+    </FormProvider>
+  );
 };
 
 export default Form;

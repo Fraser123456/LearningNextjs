@@ -77,9 +77,14 @@ function Navbar() {
             </Link>
           </>
         ) : (
-          <Link href="/api/auth/signin" className="btn m-2">
-            Signin
-          </Link>
+          <>
+            <Link href="/api/auth/signin" className="btn m-2">
+              Signin
+            </Link>
+            <Link href="/users/register" className="btn m-2">
+              Register
+            </Link>
+          </>
         )}
       </div>
     </div>

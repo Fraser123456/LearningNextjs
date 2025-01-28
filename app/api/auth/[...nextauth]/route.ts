@@ -83,6 +83,7 @@ export const authOptions: NextAuthOptions = {
         provider: account?.provider,
         hasProfile: !!profile,
       });
+      user.name = user.email?.slice(0, user.email?.indexOf("@") ?? 0);
       return true;
     },
     async jwt({ token, user, account, profile }) {
