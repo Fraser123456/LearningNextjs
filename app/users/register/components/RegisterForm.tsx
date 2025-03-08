@@ -1,21 +1,29 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import * as yup from "yup";
+import { useRouter } from "next/navigation";
 
 //Components
 import Form from "@/app/components/Form/Form";
 import FormInput from "@/app/components/Form/FormInput";
 
-//Interfaces
-interface FormFields {
-  fullName: string;
-  username: string;
-  email: string;
-  password: string;
-  passwordConfirmation: string;
-}
+//Constants
+import { RegisterFormFields } from "../Constants";
+import { RegisterResponse, RegisterUserBody } from "@/app/api/register/types";
+
+//Hooks
+import { useRegister } from "../../ApiCalls/hooks";
 
 const RegisterForm = () => {
+  const router = useRouter();
+  const {
+    mutateAsync: register,
+    isPending,
+    error,
+    isError,
+    isSuccess,
+  } = useRegister();
+
   const schema = yup.object({
     fullName: yup.string().required(),
     username: yup.string().required(),
@@ -28,11 +36,24 @@ const RegisterForm = () => {
       .oneOf([yup.ref("password")], "Passwords must match"),
   });
 
-  const handleSubmit = (data: FormFields) => {
-    console.log(data);
+  const handleSubmit = async (data: RegisterFormFields) => {
+    const payload: RegisterUserBody = {
+      email: data.email,
+      fullName: data.fullName,
+      password: data.password,
+      username: data.username,
+    };
+    const response: RegisterResponse = await register(payload);
   };
-  return (
-    <Form<FormFields>
+
+  useEffect(() => {
+    debugger;
+    if (isError) console.log(error);
+    if (isSuccess) router.push("/login");
+  }, [isSuccess, isError]);
+
+  return !isPending ? (
+    <Form<RegisterFormFields>
       schema={schema}
       onSubmit={handleSubmit}
       defaultValues={{
@@ -64,6 +85,8 @@ const RegisterForm = () => {
         </button>
       </div>
     </Form>
+  ) : (
+    <div>Loading...</div>
   );
 };
 
