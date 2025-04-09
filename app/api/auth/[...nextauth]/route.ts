@@ -78,6 +78,7 @@ export const authOptions: NextAuthOptions = {
   },
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
+      debugger;
       console.log("Sign-in callback triggered", {
         userId: user.id,
         provider: account?.provider,
@@ -87,6 +88,7 @@ export const authOptions: NextAuthOptions = {
       return true;
     },
     async jwt({ token, user, account, profile }) {
+      debugger;
       console.log("JWT callback triggered", {
         hasToken: !!token,
         hasUser: !!user,

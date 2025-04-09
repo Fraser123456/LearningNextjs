@@ -1,5 +1,5 @@
 "use client";
-import { useSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
 import React from "react";
 
@@ -72,9 +72,9 @@ function Navbar() {
             <div>
               <h1 className="text-sm text-balance">{session.user?.name}</h1>
             </div>
-            <Link href="api/auth/signout" className="btn m-1">
+            <button onClick={() => signOut()} className="btn m-1">
               Sign Out
-            </Link>
+            </button>
           </>
         ) : (
           <>

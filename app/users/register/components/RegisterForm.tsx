@@ -4,12 +4,13 @@ import * as yup from "yup";
 import { useRouter } from "next/navigation";
 
 //Components
-import Form from "@/app/components/Form/Form";
-import FormInput from "@/app/components/Form/FormInput";
+import { Form, FormInput } from "@/app/components/Form";
 
 //Constants
-import { RegisterFormFields } from "../Constants";
-import { RegisterResponse, RegisterUserBody } from "@/app/api/register/types";
+import { RegisterFormFields } from "../types/register-form.types";
+
+//Types
+import { RegisterUserBody } from "@/app/api/register/types";
 
 //Hooks
 import { useRegister } from "../../ApiCalls/hooks";
@@ -43,13 +44,13 @@ const RegisterForm = () => {
       password: data.password,
       username: data.username,
     };
-    const response: RegisterResponse = await register(payload);
+    await register(payload);
   };
 
   useEffect(() => {
     debugger;
     if (isError) console.log(error);
-    if (isSuccess) router.push("/login");
+    if (isSuccess) router.push("/api/auth/signin");
   }, [isSuccess, isError]);
 
   return !isPending ? (

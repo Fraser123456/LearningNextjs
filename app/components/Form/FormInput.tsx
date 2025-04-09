@@ -31,7 +31,6 @@ const FormInput = ({
       control={control}
       name={name}
       render={({ field, fieldState: { error } }) => {
-        console.log(error);
         return (
           <label className={labelClass}>
             <div className="label">
